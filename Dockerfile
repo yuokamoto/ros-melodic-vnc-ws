@@ -15,6 +15,9 @@ RUN  sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `ls
 
 RUN apt install -y curl pkg-config psmisc xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev ros-melodic-genpy
 
+#temp
+RUN apt upgrade -y libignition-math4
+
 #install frequetly used ros pkgs
 RUN apt install -y ros-melodic-rosbridge-server
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' && \
@@ -32,13 +35,8 @@ RUN apt install -y apt-transport-https && \
 
 #ws setting
 RUN echo source /opt/ros/melodic/setup.bash >> /root/.bashrc
-ENV CATKIN_WS=/opt/catkin_ws
-RUN mkdir -p /opt/catkin_ws/src
-WORKDIR ${CATKIN_WS}/src
-RUN catkin init
+RUN mkdir -p /root/catkin_ws/src && cd /root/catkin_ws && catkin init
 
-#temp
-RUN apt upgrade -y libignition-math4
 
 # setup entrypoint
 # COPY ./ros_entrypoint.sh /ros_entrypoint.sh
